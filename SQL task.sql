@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS s1;
 USE s1;
 
--- Users Table
+
 CREATE TABLE Users (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(50) NOT NULL,
@@ -17,7 +17,7 @@ VALUES
 ('John', 'Doe', 'johndoe@example.com', '1234567890', '2025-01-01', 'Active'),
 ('Jane', 'Smith', 'janesmith@example.com', '0987654321', '2025-01-02', 'Active');
 
--- Books Table
+
 CREATE TABLE Books (
     BookID INT PRIMARY KEY AUTO_INCREMENT,
     Title VARCHAR(255) NOT NULL,
@@ -34,7 +34,6 @@ VALUES
 ('The Great Gatsby', 'F. Scott Fitzgerald', 'Scribner', 1925, '9780743273565', 'Fiction', 5),
 ('1984', 'George Orwell', 'Secker & Warburg', 1949, '9780451524935', 'Dystopian', 3);
 
--- Transactions Table
 CREATE TABLE Transactions (
     TransactionID INT PRIMARY KEY AUTO_INCREMENT,
     UserID INT NOT NULL,
@@ -52,7 +51,6 @@ VALUES
 (1, 1, '2025-01-03', NULL, 'Borrowed'),
 (2, 2, '2025-01-03', '2025-01-10', 'Returned');
 
--- Fines Table
 CREATE TABLE Fines (
     FineID INT PRIMARY KEY AUTO_INCREMENT,
     UserID INT NOT NULL,
@@ -63,7 +61,6 @@ CREATE TABLE Fines (
     FOREIGN KEY (TransactionID) REFERENCES Transactions(TransactionID) ON DELETE CASCADE
 );
 
--- Trigger to Auto-Generate Fines for Late Returns
 DELIMITER //
 CREATE TRIGGER AfterReturn
 AFTER UPDATE ON Transactions
@@ -77,7 +74,6 @@ END;
 //
 DELIMITER ;
 
--- Librarians Table
 CREATE TABLE Librarians (
     LibrarianID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(50) NOT NULL,
@@ -90,7 +86,6 @@ INSERT INTO Librarians (FirstName, LastName, Email, HireDate)
 VALUES 
 ('Alice', 'Johnson', 'alicejohnson@example.com', '2025-01-01');
 
--- Book Requests Table
 CREATE TABLE BookRequests (
     RequestID INT PRIMARY KEY AUTO_INCREMENT,
     UserID INT NOT NULL,
@@ -105,7 +100,6 @@ INSERT INTO BookRequests (UserID, Title, Author, Status, RequestDate)
 VALUES 
 (1, 'To Kill a Mockingbird', 'Harper Lee', 'Pending', '2025-01-03');
 
--- Audit Log Table for Changes
 CREATE TABLE AuditLog (
     LogID INT PRIMARY KEY AUTO_INCREMENT,
     TableName VARCHAR(50),
@@ -130,12 +124,10 @@ END;
 //
 DELIMITER ;
 
--- Indexes for Optimization
 CREATE INDEX idx_user_email ON Users (Email);
 CREATE INDEX idx_books_genre ON Books (Genre);
 CREATE INDEX idx_transactions_status ON Transactions (Status);
 
--- Test Queries
 SELECT * FROM Users;
 SELECT * FROM Books;
 SELECT * FROM Transactions;
